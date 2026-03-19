@@ -1,0 +1,219 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            background: transparent;
+            color: #fff;
+        }
+
+        /* 3D Canvas Background */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* Content Overlay */
+        .content-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            text-align: center;
+            animation: fadeInUpHero 1.2s ease-out forwards;
+            pointer-events: auto;
+            padding: 2.4rem 2rem;
+            max-width: 680px;
+        }
+
+        @keyframes fadeInUpHero {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-logo {
+            font-size: 72px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.6));
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #2d7dff, #1bc9ff, #6de17f);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease infinite;
+            letter-spacing: -1px;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        .login-button {
+            display: inline-block;
+            padding: 16px 48px;
+            background: linear-gradient(135deg, #2d7dff, #1bc9ff);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 34px rgba(45, 125, 255, 0.36);
+            animation: slideUpButton 1.2s ease-out 0.3s both;
+            pointer-events: auto;
+        }
+
+        @keyframes slideUpButton {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .login-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 44px rgba(27, 201, 255, 0.3);
+        }
+
+        .login-button:hover::before {
+            left: 100%;
+        }
+
+        .login-button:active {
+            transform: translateY(-1px);
+        }
+
+        /* Particle Effect */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(59, 130, 246, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* Glow circles */
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            z-index: 0;
+        }
+
+        .glow-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #3b82f6, transparent);
+            top: -100px;
+            left: -100px;
+            animation: orb-float-1 8s ease-in-out infinite;
+        }
+
+        .glow-2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #06b6d4, transparent);
+            bottom: -150px;
+            right: -150px;
+            animation: orb-float-2 12s ease-in-out infinite;
+        }
+
+        @keyframes orb-float-1 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, 50px); }
+        }
+
+        @keyframes orb-float-2 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-50px, -50px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            .hero-logo {
+                font-size: 48px;
+            }
+        }

@@ -11,6 +11,7 @@ class SchoolClass extends Model
     protected $collection = 'classes';
 
     protected $fillable = [
+        'school_id',
         'name',
         'section',
         'capacity',

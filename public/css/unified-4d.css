@@ -1,0 +1,267 @@
+:root {
+    --fx-bg-1: #050816;
+    --fx-bg-2: #0b1630;
+    --fx-bg-3: #0f2344;
+    --fx-brand-1: #2d7dff;
+    --fx-brand-2: #1bc9ff;
+    --fx-brand-3: #6de17f;
+    --fx-text: #e8f0ff;
+    --fx-muted: #a7bddf;
+    --fx-border: rgba(163, 196, 255, 0.24);
+    --fx-panel: rgba(10, 25, 58, 0.56);
+    --fx-shadow: 0 28px 70px rgba(2, 7, 20, 0.45);
+}
+
+html[data-theme='dark'] {
+    --fx-bg-1: #03060f;
+    --fx-bg-2: #071223;
+    --fx-bg-3: #0d1832;
+    --fx-text: #f1f5ff;
+    --fx-muted: #96abcf;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body.fx-page {
+    font-family: "Poppins", "Segoe UI", sans-serif;
+    color: var(--text, var(--fx-text));
+    background:
+        radial-gradient(circle at 12% 9%, rgba(26, 182, 255, 0.2), transparent 36%),
+        radial-gradient(circle at 84% 22%, rgba(45, 125, 255, 0.18), transparent 32%),
+        radial-gradient(circle at 72% 78%, rgba(109, 225, 127, 0.1), transparent 30%),
+        linear-gradient(150deg, var(--fx-bg-1), var(--fx-bg-2) 44%, var(--fx-bg-3));
+    overflow-x: hidden;
+    position: relative;
+}
+
+body.fx-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.01),
+        rgba(255, 255, 255, 0.01) 1px,
+        rgba(255, 255, 255, 0) 1px,
+        rgba(255, 255, 255, 0) 4px
+    );
+    mix-blend-mode: soft-light;
+    z-index: -3;
+}
+
+.fx-canvas,
+#canvas,
+#canvas3d,
+#dashboardCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    pointer-events: none;
+}
+
+.fx-atmosphere {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.edu-icon-cloud {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.edu-icon-cloud i {
+    position: absolute;
+    color: rgba(178, 218, 255, 0.16);
+    filter: drop-shadow(0 0 16px rgba(38, 129, 255, 0.22));
+    animation: eduFloat var(--dur, 15s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+    transform: rotate(var(--rot, 0deg));
+}
+
+.edu-icon-cloud i:nth-child(odd) {
+    color: rgba(122, 236, 198, 0.13);
+}
+
+@keyframes eduFloat {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0) rotate(var(--rot, 0deg));
+        opacity: 0.35;
+    }
+    50% {
+        transform: translate3d(10px, -22px, 0) rotate(calc(var(--rot, 0deg) + 6deg));
+        opacity: 0.7;
+    }
+}
+
+.fx-atmosphere span {
+    position: absolute;
+    border-radius: 999px;
+    filter: blur(6px);
+    opacity: 0.32;
+    animation: fxOrbDrift 14s ease-in-out infinite;
+}
+
+.fx-atmosphere .a {
+    width: 220px;
+    height: 220px;
+    left: -60px;
+    top: 14%;
+    background: radial-gradient(circle at 30% 30%, rgba(27, 201, 255, 0.7), transparent 70%);
+}
+
+.fx-atmosphere .b {
+    width: 290px;
+    height: 290px;
+    right: -80px;
+    top: 48%;
+    background: radial-gradient(circle at 30% 30%, rgba(45, 125, 255, 0.66), transparent 72%);
+    animation-delay: -4s;
+}
+
+.fx-atmosphere .c {
+    width: 180px;
+    height: 180px;
+    left: 35%;
+    bottom: -50px;
+    background: radial-gradient(circle at 30% 30%, rgba(109, 225, 127, 0.6), transparent 70%);
+    animation-delay: -8s;
+}
+
+@keyframes fxOrbDrift {
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(20px, -24px) scale(1.08);
+    }
+}
+
+.fx-appear {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    animation: fxAppear 0.7s cubic-bezier(0.18, 0.9, 0.35, 1.1) forwards;
+}
+
+@keyframes fxAppear {
+    from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.fx-card,
+.login-box,
+.hero-content {
+    background: linear-gradient(160deg, rgba(15, 30, 66, 0.72), rgba(8, 18, 44, 0.62));
+    border: 1px solid var(--fx-border);
+    border-radius: 24px;
+    box-shadow: var(--fx-shadow);
+    backdrop-filter: blur(16px);
+}
+
+.fx-title-gradient,
+.login-title,
+.hero-title {
+    background: linear-gradient(135deg, var(--fx-brand-1), var(--fx-brand-2) 48%, var(--fx-brand-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.fx-btn,
+.login-btn,
+.login-button {
+    border: 0;
+    color: #f7fbff;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    background: linear-gradient(135deg, var(--fx-brand-1), var(--fx-brand-2));
+    box-shadow: 0 12px 34px rgba(45, 125, 255, 0.36);
+    transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+}
+
+.fx-btn:hover,
+.login-btn:hover,
+.login-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 44px rgba(27, 201, 255, 0.3);
+    filter: brightness(1.05);
+    color: #f7fbff;
+}
+
+.fx-tilt {
+    transform-style: preserve-3d;
+    transition: transform 0.22s ease;
+    will-change: transform;
+}
+
+body.fx-page input,
+body.fx-page select,
+body.fx-page textarea,
+.form-control,
+.form-select {
+    background: rgba(153, 196, 255, 0.1);
+    border: 1px solid rgba(153, 196, 255, 0.28);
+    color: #f5f9ff;
+    border-radius: 12px;
+    padding: 0.68rem 0.82rem;
+    backdrop-filter: blur(8px);
+    transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+body.fx-page input::placeholder,
+body.fx-page textarea::placeholder,
+.form-control::placeholder {
+    color: rgba(222, 236, 255, 0.58);
+}
+
+body.fx-page .form-label {
+    color: rgba(220, 236, 255, 0.9);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+body.fx-page .focus-4d,
+body.fx-page input:focus,
+body.fx-page select:focus,
+body.fx-page textarea:focus,
+.form-control:focus,
+.form-select:focus {
+    border-color: rgba(27, 201, 255, 0.62) !important;
+    box-shadow: 0 0 0 3px rgba(27, 201, 255, 0.18), 0 18px 40px rgba(45, 125, 255, 0.2) !important;
+    transform: translateY(-1px) scale(1.01);
+    color: #ffffff;
+}
+
+body.fx-page .table,
+body.fx-page .table th,
+body.fx-page .table td,
+body.fx-page .soft {
+    color: inherit;
+}
+
+@media (max-width: 992px) {
+    .fx-tilt {
+        transform: none !important;
+    }
+}

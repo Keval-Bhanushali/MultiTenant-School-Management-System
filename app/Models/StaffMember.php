@@ -4,22 +4,19 @@ namespace App\Models;
 
 use MongoDB\Laravel\Eloquent\Model;
 
-class Teacher extends Model
+class StaffMember extends Model
 {
     protected $connection = 'mongodb';
 
-    protected $collection = 'teachers';
+    protected $collection = 'staff_members';
 
     protected $fillable = [
         'school_id',
         'name',
         'email',
         'phone',
-        'subject_specialization',
+        'department',
+        'designation',
+        'user_role',
     ];
-
-    public function classes()
-    {
-        return $this->hasMany(SchoolClass::class, 'teacher_id');
-    }
 }

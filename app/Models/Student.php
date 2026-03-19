@@ -11,6 +11,7 @@ class Student extends Model
     protected $collection = 'students';
 
     protected $fillable = [
+        'school_id',
         'name',
         'email',
         'roll_number',

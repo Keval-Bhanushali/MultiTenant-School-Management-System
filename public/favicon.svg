@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="SchoolHub favicon">
+  <defs>
+    <linearGradient id="g" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1D4ED8"/>
+      <stop offset="1" stop-color="#0891B2"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#g)"/>
+  <path d="M32 14L14 22L32 30L50 22L32 14Z" fill="#fff"/>
+  <path d="M22 30V37C22 41 27 44 32 44C37 44 42 41 42 37V30" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+  <path d="M50 22V33" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="50" cy="36" r="3" fill="#fff"/>
+</svg>
