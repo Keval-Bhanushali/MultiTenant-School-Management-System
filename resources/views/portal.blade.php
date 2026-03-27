@@ -117,26 +117,33 @@
 
     <section class="row g-3 mb-3">
         <div id="dashboard-overview"></div>
+        @if(in_array($currentUser->role, ['superadmin', 'admin']))
         <div class="col-md-4">
             <div class="glass p-3 metric metric-teachers fade-up" style="animation-delay: 0.05s;">
                 <p class="soft mb-1">Teachers</p>
                 <h3 class="mb-0 metric-number" data-count="{{ $stats['teachers'] }}">0</h3>
             </div>
         </div>
+        @endif
+        @if(in_array($currentUser->role, ['superadmin', 'admin', 'staff', 'teacher']))
         <div class="col-md-4">
             <div class="glass p-3 metric metric-classes fade-up" style="animation-delay: 0.1s;">
                 <p class="soft mb-1">Classes</p>
                 <h3 class="mb-0 metric-number" data-count="{{ $stats['classes'] }}">0</h3>
             </div>
         </div>
+        @endif
+        @if(in_array($currentUser->role, ['superadmin', 'admin', 'staff', 'teacher', 'student']))
         <div class="col-md-4">
             <div class="glass p-3 metric metric-students fade-up" style="animation-delay: 0.15s;">
                 <p class="soft mb-1">Students</p>
                 <h3 class="mb-0 metric-number" data-count="{{ $stats['students'] }}">0</h3>
             </div>
         </div>
+        @endif
     </section>
     <section class="row g-3 mb-4">
+        @if(in_array($currentUser->role, ['superadmin', 'admin', 'staff', 'teacher']))
         <div class="col-lg-4">
             <div class="glass chart-card p-3 p-lg-4 fade-up" style="animation-delay: 0.18s;">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -150,6 +157,8 @@
                 <p class="soft mt-3 mb-0 small">Live attendance trend this week.</p>
             </div>
         </div>
+        @endif
+        @if(in_array($currentUser->role, ['superadmin', 'admin']))
         <div class="col-lg-4">
             <div class="glass chart-card p-3 p-lg-4 fade-up" style="animation-delay: 0.22s;">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -167,6 +176,8 @@
                 <p class="soft mt-3 mb-0 small">Growth in student onboarding.</p>
             </div>
         </div>
+        @endif
+        @if(in_array($currentUser->role, ['superadmin', 'admin', 'staff', 'teacher']))
         <div class="col-lg-4">
             <div class="glass chart-card p-3 p-lg-4 fade-up" style="animation-delay: 0.26s;">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -182,6 +193,7 @@
                 <p class="soft mt-3 mb-0 small">Activity intensity by module actions.</p>
             </div>
         </div>
+        @endif
     </section>
 
     <section class="module-card module-classes glass p-3 p-lg-4 mb-4 fade-up" style="animation-delay: 0.3s;">
