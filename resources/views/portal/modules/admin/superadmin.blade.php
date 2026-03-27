@@ -1,4 +1,4 @@
-    <section id="superadmin" class="module-card module-classes glass p-3 p-lg-4 mb-4 fade-up" style="animation-delay: 0.12s;">
+<section id="superadmin" class="module-card module-classes glass p-3 p-lg-4 mb-4 fade-up" style="animation-delay: 0.12s;">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2 class="h4 section-title mb-0">Superadmin Control Center</h2>
             <span class="soft">Create school and school admin users</span>
@@ -78,6 +78,39 @@
                         @endforelse
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mt-4">
+            <div class="col-lg-12">
+                <div class="p-3 rounded-3 border h-100">
+                    <h3 class="h6 mb-3">Assign Module Permissions to User</h3>
+                    <form method="POST" action="{{ route('admin.assignPermissions', $selectedUser->_id ?? '') }}">
+                        @csrf
+                        <div class="mb-2">
+                            <label for="userSelect">Select User:</label>
+                            <select id="userSelect" name="user_id" class="form-select" required>
+                                <option value="">Choose user</option>
+                                @foreach($allUsers as $user)
+                                    <option value="{{ $user->_id }}" {{ (isset($selectedUser) && $selectedUser->_id == $user->_id) ? 'selected' : '' }}>
+                                        {{ $user->name }} ({{ $user->role }})
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label>Module Permissions:</label><br>
+                            @foreach($allModules as $module)
+                                <label class="me-3">
+                                    <input type="checkbox" name="permissions[]" value="{{ $module }}"
+                                        {{ (isset($selectedUser) && in_array($module, $selectedUser->permissions ?? [])) ? 'checked' : '' }}>
+                                    {{ ucfirst($module) }}
+                                </label>
+                            @endforeach
+                        </div>
+                        <button type="submit" class="btn btn-brand">Save Permissions</button>
+                    </form>
                 </div>
             </div>
         </div>
