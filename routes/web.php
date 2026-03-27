@@ -1,3 +1,5 @@
+// Razorpay Payment Route
+Route::post('/finance/pay/razorpay', [\App\Http\Controllers\FinanceHrController::class, 'payWithRazorpay'])->name('finance.pay.razorpay');
 <?php
 
 use App\Http\Controllers\AuthController;
@@ -188,4 +190,15 @@ Route::middleware('auth')->group(function () {
 	Route::get('/reports/attendance/export', [DashboardController::class, 'exportAttendanceCsv'])
 		->middleware('role:superadmin,admin,staff,teacher')
 		->name('dashboard.reports.attendance.export');
+		// [NEW_NAME] Module Routes
+		Route::get('/wallet', [\App\Http\Controllers\WalletController::class, 'index'])->name('wallet.index');
+		Route::get('/analytics/at-risk-students', [\App\Http\Controllers\AnalyticsController::class, 'atRiskStudents'])->name('analytics.at_risk_students');
+		Route::get('/alumni', [\App\Http\Controllers\AlumniController::class, 'index'])->name('alumni.index');
+		Route::get('/attendance/ai', [\App\Http\Controllers\AttendanceController::class, 'aiAttendance'])->name('attendance.ai');
+		Route::get('/grading/ai', [\App\Http\Controllers\GradingController::class, 'aiGrading'])->name('grading.ai');
+		Route::get('/gamification/leaderboard', [\App\Http\Controllers\GamificationController::class, 'leaderboard'])->name('gamification.leaderboard');
+		Route::get('/realtime/gps-webrtc', [\App\Http\Controllers\RealtimeController::class, 'gpsWebrtc'])->name('realtime.gps_webrtc');
+		Route::get('/documents/vault', [\App\Http\Controllers\DocumentsController::class, 'vault'])->name('documents.vault');
+		Route::get('/finance-hr', [\App\Http\Controllers\FinanceHrController::class, 'index'])->name('finance_hr.index');
+		Route::get('/calendar', [\App\Http\Controllers\CalendarController::class, 'index'])->name('calendar.index');
 });
