@@ -371,6 +371,26 @@
     </main>
 </div>
 
+@if($currentUser->role === 'admin' && isset($schools) && count($schools) > 1)
+    <section class="row g-4 mb-4">
+        @foreach($schools as $school)
+            <div class="col-md-6 col-lg-4">
+                <div class="card glass p-3 h-100">
+                    <div class="d-flex align-items-center mb-2">
+                        <img src="{{ $school->logo_url ?? asset('images/default-school-logo.svg') }}" alt="Logo" class="rounded-circle me-3" style="width:56px; height:56px; object-fit:cover;">
+                        <div>
+                            <h5 class="mb-0">{{ $school->name }}</h5>
+                        </div>
+                    </div>
+                    <div class="mb-2"><strong>Email:</strong> {{ $school->email }}</div>
+                    <div class="mb-2"><strong>Contact:</strong> {{ $school->phone }}</div>
+                    <a href="{{ route('portal.school', $school->_id) }}" class="btn btn-brand w-100 mt-2">Manage Workspace</a>
+                </div>
+            </div>
+        @endforeach
+    </section>
+@endif
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('js/portal.js') }}"></script>
 </body>
