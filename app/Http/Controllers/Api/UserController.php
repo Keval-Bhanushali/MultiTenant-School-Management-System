@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Support\RoleMap;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -16,8 +17,9 @@ class UserController extends Controller
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'role_id' => $user->role_id,
-            'tenant_id' => $user->tenant_id,
+            'role_id' => (int) ($user->role_id ?? RoleMap::idFromName((string) $user->role)),
+            'role' => $user->role,
+            'tenant_id' => $user->tenant_id ?? $user->school_id,
         ]);
     }
 }

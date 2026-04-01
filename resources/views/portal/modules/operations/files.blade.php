@@ -1,7 +1,9 @@
-<section id="file-management" class="module-card module-classes glass p-3 p-lg-4 mb-4 fade-up" style="animation-delay: 0.36s;">
+<section id="file-management" class="glass-card p-4 mb-4 fade-up" style="animation-delay: 0.36s;">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-        <h2 class="h4 section-title mb-0">File Management</h2>
-        <span class="soft">Upload, filter, and share school files by role</span>
+        <div>
+            <h2 class="h4 section-title mb-1">File Management</h2>
+            <span class="soft">Upload, filter, and share school files by role</span>
+        </div>
     </div>
 
     <form id="fileUploadForm" class="row g-2 align-items-end" enctype="multipart/form-data" autocomplete="off">

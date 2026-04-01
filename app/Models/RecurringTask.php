@@ -2,26 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\Model;
 
 class RecurringTask extends Model
 {
-    use HasFactory;
+    protected $connection = 'mongodb';
+
+    protected $collection = 'recurring_tasks';
 
     protected $fillable = [
+        'school_id',
         'tenant_id',
         'task_name',
         'frequency',
         'meta',
+        'is_active',
     ];
 
     protected $casts = [
         'meta' => 'array',
+        'is_active' => 'boolean',
     ];
-
-    public function tenant()
-    {
-        return $this->belongsTo(Tenant::class);
-    }
 }

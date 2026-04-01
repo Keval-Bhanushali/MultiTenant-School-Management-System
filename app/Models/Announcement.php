@@ -6,12 +6,16 @@ use MongoDB\Laravel\Eloquent\Model;
 
 class Announcement extends Model
 {
+    protected $connection = 'mongodb';
+
     protected $collection = 'announcements';
+
     protected $fillable = [
         'school_id',
         'created_by',
         'title',
         'content',
+        'translated_messages',
         'target_roles',
         'priority',
         'published_at',
@@ -21,6 +25,7 @@ class Announcement extends Model
     ];
 
     protected $casts = [
+        'translated_messages' => 'array',
         'target_roles' => 'array',
         'published_at' => 'datetime',
         'expires_at' => 'datetime',

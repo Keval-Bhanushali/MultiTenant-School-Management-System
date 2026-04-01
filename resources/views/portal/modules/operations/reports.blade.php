@@ -1,30 +1,32 @@
-<section id="reports-module" class="module-card module-teachers glass p-3 p-lg-4 mb-4 fade-up" style="animation-delay: 0.38s;">
+<section id="reports-module" class="glass-card p-4 mb-4 fade-up" style="animation-delay: 0.38s;">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-        <h2 class="h4 section-title mb-0">Advanced Reports & Exports</h2>
-        <span class="soft">Generate CSV exports for results and attendance</span>
+        <div>
+            <h2 class="h4 section-title mb-1">Advanced Reports & Exports</h2>
+            <span class="soft">Generate CSV exports for results and attendance</span>
+        </div>
     </div>
 
     <div class="row g-3 mb-3">
         <div class="col-lg-3 col-sm-6">
-            <div class="p-3 rounded-3 border report-kpi h-100">
+            <div class="p-3 rounded-4 border report-kpi h-100">
                 <p class="soft small mb-1">Total Results</p>
                 <p id="reportTotalResults" class="h4 mb-0">0</p>
             </div>
         </div>
         <div class="col-lg-3 col-sm-6">
-            <div class="p-3 rounded-3 border report-kpi h-100">
+            <div class="p-3 rounded-4 border report-kpi h-100">
                 <p class="soft small mb-1">Pass Rate</p>
                 <p id="reportPassRate" class="h4 mb-0">0%</p>
             </div>
         </div>
         <div class="col-lg-3 col-sm-6">
-            <div class="p-3 rounded-3 border report-kpi h-100">
+            <div class="p-3 rounded-4 border report-kpi h-100">
                 <p class="soft small mb-1">Average Marks</p>
                 <p id="reportAverageMarks" class="h4 mb-0">0</p>
             </div>
         </div>
         <div class="col-lg-3 col-sm-6">
-            <div class="p-3 rounded-3 border report-kpi h-100">
+            <div class="p-3 rounded-4 border report-kpi h-100">
                 <p class="soft small mb-1">Attendance Rate</p>
                 <p id="reportAttendanceRate" class="h4 mb-0">0%</p>
             </div>
@@ -68,7 +70,7 @@
 
     <div id="reportAlert" class="d-none" role="alert"></div>
 
-    <div class="p-3 rounded-3 border mt-3">
+    <div class="p-3 rounded-4 border mt-3">
         <div class="d-flex justify-content-between align-items-center mb-2">
             <h3 class="h6 mb-0">Monthly Results Trend</h3>
             <span class="soft small">Count of results by month</span>
@@ -78,7 +80,7 @@
 
     <div class="row g-3">
         <div class="col-lg-6">
-            <div class="p-3 rounded-3 border h-100">
+            <div class="p-3 rounded-4 border h-100">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <h3 class="h6 mb-0">Results Export</h3>
                     <a id="resultsExportLink" class="btn btn-sm btn-outline-primary" href="{{ route('dashboard.reports.results.export') }}">Download CSV</a>
@@ -87,7 +89,7 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <div class="p-3 rounded-3 border h-100">
+            <div class="p-3 rounded-4 border h-100">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <h3 class="h6 mb-0">Attendance Export</h3>
                     <a id="attendanceExportLink" class="btn btn-sm btn-outline-primary" href="{{ route('dashboard.reports.attendance.export') }}">Download CSV</a>

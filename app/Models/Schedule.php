@@ -2,21 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\Model;
 
 class Schedule extends Model
 {
-    use HasFactory;
+    protected $connection = 'mongodb';
+
+    protected $collection = 'schedules';
 
     protected $fillable = [
+        'school_id',
         'tenant_id',
         'name',
         'date',
+        'status',
+        'notes',
     ];
-
-    public function tenant()
-    {
-        return $this->belongsTo(Tenant::class);
-    }
 }

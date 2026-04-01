@@ -2,25 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\Model;
 
 class Wallet extends Model
 {
-    use HasFactory;
+    protected $connection = 'mongodb';
+
+    protected $collection = 'wallets';
 
     protected $fillable = [
+        'tenant_id',
+        'school_id',
         'user_id',
+        'parent_user_id',
         'balance',
+        'currency',
+        'status',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class);
-    }
+    protected $casts = [
+        'balance' => 'float',
+    ];
 }

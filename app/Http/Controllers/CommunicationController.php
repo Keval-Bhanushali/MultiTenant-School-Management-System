@@ -5,20 +5,26 @@ namespace App\Http\Controllers;
 use App\Models\Message;
 use App\Models\Announcement;
 use App\Models\FileDocument;
+use App\Services\Communication\NoticeTranslationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommunicationController extends Controller
 {
+    public function __construct(private NoticeTranslationService $translationService)
+    {
+    }
+
     private function currentSchoolId(): ?string
     {
-        $user = auth()->user();
+        $user = Auth::user();
         return $user->role === 'superadmin' ? null : (string) $user->school_id;
     }
 
     // Messages
     public function getMessages(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $messages = Message::query()
             ->where(function ($query) use ($user) {
                 $query->where('recipient_id', $user->_id)
@@ -40,7 +46,7 @@ class CommunicationController extends Controller
 
         $message = Message::query()->create([
             'school_id' => $this->currentSchoolId(),
-            'sender_id' => (string) auth()->user()->_id,
+            'sender_id' => (string) Auth::user()->_id,
             'recipient_id' => $validated['recipient_id'],
             'subject' => $validated['subject'],
             'body' => $validated['body'],
@@ -58,7 +64,7 @@ class CommunicationController extends Controller
     {
         $message = Message::query()
             ->where('_id', $id)
-            ->where('recipient_id', (string) auth()->user()->_id)
+            ->where('recipient_id', (string) Auth::user()->_id)
             ->firstOrFail();
 
         $message->update([
@@ -74,7 +80,7 @@ class CommunicationController extends Controller
         Message::query()
             ->where('_id', $id)
             ->where(function ($query) {
-                $userId = (string) auth()->user()->_id;
+                $userId = (string) Auth::user()->_id;
                 $query->where('recipient_id', $userId)
                     ->orWhere('sender_id', $userId);
             })
@@ -87,7 +93,7 @@ class CommunicationController extends Controller
     // Announcements
     public function getAnnouncements()
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $announcements = Announcement::query()
             ->where('school_id', $this->currentSchoolId())
             ->where(function ($query) use ($user) {
@@ -107,7 +113,7 @@ class CommunicationController extends Controller
 
     public function createAnnouncement(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
         if (!in_array($user->role, ['superadmin', 'admin', 'staff'])) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
@@ -116,15 +122,24 @@ class CommunicationController extends Controller
             'title' => ['required', 'string', 'max:180'],
             'content' => ['required', 'string', 'max:3000'],
             'target_roles' => ['required', 'array'],
+            'target_locales' => ['nullable', 'array'],
             'priority' => ['required', 'in:low,medium,high,urgent'],
             'expires_at' => ['nullable', 'date'],
         ]);
+
+        $translatedMessages = collect($validated['target_locales'] ?? [])
+            ->filter(fn ($locale) => is_string($locale) && $locale !== 'en')
+            ->mapWithKeys(fn ($locale) => [
+                $locale => $this->translationService->translateFromEnglish($validated['content'], $locale),
+            ])
+            ->toArray();
 
         $announcement = Announcement::query()->create([
             'school_id' => $this->currentSchoolId(),
             'created_by' => (string) $user->_id,
             'title' => $validated['title'],
             'content' => $validated['content'],
+            'translated_messages' => $translatedMessages,
             'target_roles' => $validated['target_roles'],
             'priority' => $validated['priority'],
             'published_at' => now(),
@@ -145,7 +160,7 @@ class CommunicationController extends Controller
             ->where('school_id', $this->currentSchoolId())
             ->firstOrFail();
 
-        if ((string) $announcement->created_by !== (string) auth()->user()->_id && auth()->user()->role !== 'superadmin') {
+        if ((string) $announcement->created_by !== (string) Auth::user()->_id && Auth::user()->role !== 'superadmin') {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
@@ -177,7 +192,7 @@ class CommunicationController extends Controller
 
         $fileDoc = FileDocument::query()->create([
             'school_id' => $this->currentSchoolId(),
-            'uploader_id' => (string) auth()->user()->_id,
+            'uploader_id' => (string) Auth::user()->_id,
             'file_name' => $file->getClientOriginalName(),
             'file_path' => $filePath,
             'file_type' => $file->getClientMimeType(),
@@ -197,7 +212,7 @@ class CommunicationController extends Controller
 
     public function getFiles(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $files = FileDocument::query()
             ->where('school_id', $this->currentSchoolId())
             ->where(function ($query) use ($user) {
@@ -212,7 +227,7 @@ class CommunicationController extends Controller
 
     public function downloadFile($id)
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $file = FileDocument::query()
             ->where('_id', $id)
             ->where('school_id', $this->currentSchoolId())
@@ -241,7 +256,7 @@ class CommunicationController extends Controller
             ->where('school_id', $this->currentSchoolId())
             ->firstOrFail();
 
-        if ((string) $file->uploader_id !== (string) auth()->user()->_id && auth()->user()->role !== 'admin') {
+        if ((string) $file->uploader_id !== (string) Auth::user()->_id && Auth::user()->role !== 'admin') {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
@@ -257,7 +272,7 @@ class CommunicationController extends Controller
 
     public function getStats()
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $schoolId = $this->currentSchoolId();
 
         return response()->json([

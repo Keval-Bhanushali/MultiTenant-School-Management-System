@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Support\RoleMap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,7 +36,13 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('portal.index');
+        $user = $request->user();
+
+        if ($user && ((int) $user->role_id === RoleMap::SUPERADMIN || $user->role === 'superadmin')) {
+            return redirect()->route('superadmin.dashboard');
+        }
+
+        return redirect()->route('portal.school');
     }
 
     public function logout(Request $request)
@@ -50,7 +57,7 @@ class AuthController extends Controller
 
     public function bootstrapSuperAdmin()
     {
-        $existing = User::query()->where('role', 'superadmin')->first();
+        $existing = User::query()->where('role_id', RoleMap::SUPERADMIN)->orWhere('role', 'superadmin')->first();
         if ($existing) {
             return response()->json([
                 'message' => 'Superadmin already exists.',
@@ -63,9 +70,12 @@ class AuthController extends Controller
             'username' => 'superadmin',
             'email' => 'superadmin@platform.local',
             'password' => 'superadmin123',
+            'role_id' => RoleMap::SUPERADMIN,
             'role' => 'superadmin',
+            'tenant_id' => null,
             'school_id' => null,
             'status' => 'active',
+            'preferred_language' => 'en',
         ]);
 
         return response()->json([

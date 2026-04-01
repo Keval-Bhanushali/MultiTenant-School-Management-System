@@ -2,21 +2,26 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\Model;
 
 class Document extends Model
 {
-    use HasFactory;
+    protected $connection = 'mongodb';
+
+    protected $collection = 'documents';
 
     protected $fillable = [
+        'tenant_id',
+        'school_id',
         'user_id',
         'type',
         'file_path',
+        'status',
+        'verified_by',
+        'verified_at',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $casts = [
+        'verified_at' => 'datetime',
+    ];
 }

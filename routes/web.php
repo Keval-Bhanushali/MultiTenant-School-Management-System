@@ -4,14 +4,23 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SchoolPortalController;
 use App\Http\Controllers\CommunicationController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\Resources\AttendanceResourceController;
+use App\Http\Controllers\Resources\NoticeResourceController;
+use App\Http\Controllers\Resources\SchoolResourceController;
+use App\Http\Controllers\Resources\StaffMemberResourceController;
+use App\Http\Controllers\Resources\StudentResourceController;
+use App\Http\Controllers\Resources\TeacherResourceController;
 use App\Models\School;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-	if (auth()->check()) {
+	if (Auth::check()) {
 		return redirect()->route('portal.index');
 	}
-	return view('home');
+	return view('welcome');
 })->name('home');
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -20,7 +29,17 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/setup/superadmin', [AuthController::class, 'bootstrapSuperAdmin'])->name('auth.bootstrap');
 
 Route::middleware('auth')->group(function () {
-	Route::get('/dashboard', [SchoolPortalController::class, 'index'])->name('portal.index');
+	Route::get('/dashboard', function () {
+		$user = Auth::user();
+		if ($user && ($user->isSuperAdmin())) {
+			return redirect()->route('superadmin.dashboard');
+		}
+
+		return redirect()->route('portal.school');
+	})->name('portal.index');
+	Route::get('/superadmin/dashboard', [SuperAdminController::class, 'dashboard'])
+		->middleware('role:superadmin')
+		->name('superadmin.dashboard');
 	Route::get('/school', [SchoolPortalController::class, 'schoolPage'])->name('portal.school');
 
 	Route::post('/schools', [SchoolPortalController::class, 'storeSchool'])
@@ -136,6 +155,15 @@ Route::middleware('auth')->group(function () {
 	Route::post('/profile/update', [ProfileController::class, 'update'])->name('portal.profile.update');
 	Route::post('/password/update', [ProfileController::class, 'updatePassword'])->name('portal.password.update');
 
+	Route::prefix('resources')->name('resources.')->group(function () {
+		Route::resource('schools', SchoolResourceController::class);
+		Route::resource('teachers', TeacherResourceController::class);
+		Route::resource('students', StudentResourceController::class);
+		Route::resource('staff-members', StaffMemberResourceController::class)->parameters(['staff-members' => 'id']);
+		Route::resource('notices', NoticeResourceController::class);
+		Route::resource('attendance', AttendanceResourceController::class);
+	});
+
 	// Communication Routes
 	Route::get('/messages', [CommunicationController::class, 'getMessages'])
 		->name('communication.messages.index');
@@ -193,14 +221,27 @@ Route::middleware('auth')->group(function () {
 		->middleware('role:superadmin,admin,staff,teacher')
 		->name('dashboard.reports.attendance.export');
 		
-	Route::get('/wallet', [\App\Http\Controllers\WalletController::class, 'index'])->name('wallet.index');
-	Route::get('/analytics/at-risk-students', [\App\Http\Controllers\AnalyticsController::class, 'atRiskStudents'])->name('analytics.at_risk_students');
-	Route::get('/alumni', [\App\Http\Controllers\AlumniController::class, 'index'])->name('alumni.index');
+	Route::prefix('modules')->name('modules.')->group(function () {
+		Route::resource('wallet', \App\Http\Controllers\Modules\Wallet\WalletController::class);
+		Route::resource('documents', \App\Http\Controllers\Modules\Documents\DocumentsController::class);
+		Route::resource('alumni', \App\Http\Controllers\Modules\Alumni\AlumniController::class);
+		Route::resource('analytics', \App\Http\Controllers\Modules\Analytics\AnalyticsController::class);
+		Route::resource('realtime', \App\Http\Controllers\Modules\Realtime\RealtimeController::class);
+		Route::resource('finance-hr', \App\Http\Controllers\Modules\FinanceHr\FinanceHrController::class)->parameters(['finance-hr' => 'id']);
+
+		Route::get('calendar', [\App\Http\Controllers\Modules\Calendar\CalendarController::class, 'index'])->name('calendar.index');
+		Route::get('calendar/create', [\App\Http\Controllers\Modules\Calendar\CalendarController::class, 'create'])->name('calendar.create');
+		Route::get('calendar/{id}', [\App\Http\Controllers\Modules\Calendar\CalendarController::class, 'show'])->name('calendar.show');
+		Route::get('calendar/{id}/edit', [\App\Http\Controllers\Modules\Calendar\CalendarController::class, 'edit'])->name('calendar.edit');
+		Route::post('calendar', [\App\Http\Controllers\Modules\Calendar\CalendarController::class, 'store'])->name('calendar.store');
+		Route::put('calendar/{id}', [\App\Http\Controllers\Modules\Calendar\CalendarController::class, 'update'])->name('calendar.update');
+		Route::delete('calendar/{id}', [\App\Http\Controllers\Modules\Calendar\CalendarController::class, 'destroy'])->name('calendar.destroy');
+		Route::post('calendar/tasks', [\App\Http\Controllers\Modules\Calendar\CalendarController::class, 'taskStore'])->name('calendar.tasks.store');
+		Route::put('calendar/tasks/{id}', [\App\Http\Controllers\Modules\Calendar\CalendarController::class, 'taskUpdate'])->name('calendar.tasks.update');
+		Route::delete('calendar/tasks/{id}', [\App\Http\Controllers\Modules\Calendar\CalendarController::class, 'taskDestroy'])->name('calendar.tasks.destroy');
+	});
+
 	Route::get('/attendance/ai', [\App\Http\Controllers\AttendanceController::class, 'aiAttendance'])->name('attendance.ai');
 	Route::get('/grading/ai', [\App\Http\Controllers\GradingController::class, 'aiGrading'])->name('grading.ai');
 	Route::get('/gamification/leaderboard', [\App\Http\Controllers\GamificationController::class, 'leaderboard'])->name('gamification.leaderboard');
-	Route::get('/realtime/gps-webrtc', [\App\Http\Controllers\RealtimeController::class, 'gpsWebrtc'])->name('realtime.gps_webrtc');
-	Route::get('/documents/vault', [\App\Http\Controllers\DocumentsController::class, 'vault'])->name('documents.vault');
-	Route::get('/finance-hr', [\App\Http\Controllers\FinanceHrController::class, 'index'])->name('finance_hr.index');
-	Route::get('/calendar', [\App\Http\Controllers\CalendarController::class, 'index'])->name('calendar.index');
 });

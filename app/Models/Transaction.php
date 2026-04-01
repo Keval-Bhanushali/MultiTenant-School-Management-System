@@ -2,23 +2,30 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\Model;
 
 class Transaction extends Model
 {
-    use HasFactory;
+    protected $connection = 'mongodb';
+
+    protected $collection = 'transactions';
 
     protected $fillable = [
+        'tenant_id',
+        'school_id',
         'wallet_id',
+        'student_user_id',
         'type',
         'amount',
         'reference',
         'method',
+        'channel',
+        'status',
+        'metadata',
     ];
 
-    public function wallet()
-    {
-        return $this->belongsTo(Wallet::class);
-    }
+    protected $casts = [
+        'amount' => 'float',
+        'metadata' => 'array',
+    ];
 }

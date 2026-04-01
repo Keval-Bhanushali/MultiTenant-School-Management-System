@@ -9,3 +9,123 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background:
+        radial-gradient(circle at top left, rgba(99, 102, 241, 0.18), transparent 28%),
+        radial-gradient(circle at 80% 10%, rgba(34, 211, 238, 0.16), transparent 22%),
+        radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.14), transparent 26%),
+        #020617;
+}
+
+@layer components {
+    .glass-card {
+        @apply rounded-[2rem] border border-white/20 bg-white/10 backdrop-blur-2xl shadow-2xl shadow-slate-950/50;
+    }
+
+    .glass-input {
+        @apply w-full rounded-2xl border border-white/15 bg-black/5 px-4 py-3 text-slate-100 shadow-inner shadow-black/25 outline-none transition-all duration-300 placeholder:text-slate-400 focus:border-transparent focus:ring-2 focus:ring-indigo-500/50;
+    }
+
+    .glass-button {
+        @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 px-5 py-3 font-medium text-white shadow-lg shadow-indigo-500/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-indigo-400/40;
+    }
+
+    .glass-button-secondary {
+        @apply inline-flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-5 py-3 font-medium text-white backdrop-blur-2xl transition-all duration-300 hover:-translate-y-1 hover:bg-white/15;
+    }
+
+    .mesh-orb {
+        position: absolute;
+        border-radius: 9999px;
+        filter: blur(24px);
+        opacity: 0.85;
+        animation: orb-float 16s ease-in-out infinite;
+    }
+
+    .mesh-orb.one {
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.55), rgba(99, 102, 241, 0));
+    }
+
+    .mesh-orb.two {
+        background: radial-gradient(circle, rgba(34, 211, 238, 0.45), rgba(34, 211, 238, 0));
+        animation-delay: -5s;
+    }
+
+    .mesh-orb.three {
+        background: radial-gradient(circle, rgba(168, 85, 247, 0.42), rgba(168, 85, 247, 0));
+        animation-delay: -10s;
+    }
+
+    .floating-panel {
+        position: absolute;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(28px);
+        box-shadow: 0 30px 80px rgba(2, 6, 23, 0.55);
+        transform-style: preserve-3d;
+        animation: drift 18s ease-in-out infinite;
+    }
+
+    .section-shell {
+        @apply relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/10 backdrop-blur-2xl;
+    }
+}
+
+@keyframes orb-float {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate3d(0, -18px, 0) scale(1.08);
+    }
+}
+
+@keyframes drift {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+
+    50% {
+        transform: translate3d(0, -16px, 0) rotate(2deg);
+    }
+}
+
+@keyframes breathe {
+    0%,
+    100% {
+        opacity: 0.35;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.65;
+        transform: scale(1.06);
+    }
+}
+
+@keyframes floaty {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg);
+    }
+
+    50% {
+        transform: translate3d(0, -14px, 0) rotateX(4deg) rotateY(-4deg);
+    }
+}
+
+.animate-breathe {
+    animation: breathe 10s ease-in-out infinite;
+}
+
+.animate-floaty {
+    animation: floaty 14s ease-in-out infinite;
+}

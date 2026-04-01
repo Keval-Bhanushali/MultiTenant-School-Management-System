@@ -1,72 +1,74 @@
-    <section id="operations" class="module-card module-students glass p-3 p-lg-4 mb-4 fade-up" style="animation-delay: 0.33s;">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="h4 section-title mb-0">Operations Modules</h2>
-            <span class="soft">Timetable, Results, Notices, Holidays, Attendance</span>
+<section id="operations" class="glass-card p-4 mb-4 fade-up" style="animation-delay: 0.33s;">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <div>
+            <h2 class="h4 section-title mb-1">Operations Modules</h2>
+            <span class="soft">Timetable, results, notices, holidays, attendance</span>
         </div>
+    </div>
 
-        <div class="row g-3">
-            <div class="col-lg-6">
-                <div class="p-3 rounded-3 border h-100">
-                    <h3 class="h6 mb-2">Timetable Entry</h3>
-                    <form class="row g-2" method="POST" action="{{ route('portal.timetable.store') }}">
-                        @csrf
-                        <div class="col-4">
-                            <select name="standard_id" class="form-select" required>
-                                <option value="">Standard</option>
-                                @foreach($standards as $standard)
-                                    <option value="{{ $standard->_id }}">{{ $standard->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-4">
-                            <select name="subject_id" class="form-select" required>
-                                <option value="">Subject</option>
-                                @foreach($subjects as $subject)
-                                    <option value="{{ $subject->_id }}">{{ $subject->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-4">
-                            <select name="teacher_id" class="form-select">
-                                <option value="">Teacher (optional)</option>
-                                @foreach($teachers as $teacher)
-                                    <option value="{{ $teacher->_id }}">{{ $teacher->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-3"><input class="form-control" name="day" placeholder="Day" required></div>
-                        <div class="col-3"><input class="form-control" name="start_time" placeholder="Start" required></div>
-                        <div class="col-3"><input class="form-control" name="end_time" placeholder="End" required></div>
-                        <div class="col-2 d-grid"><button class="btn btn-brand js-submit-btn" type="submit"><span class="btn-label">Save</span><span class="btn-spinner"></span></button></div>
-                    </form>
-                    <div class="table-responsive mt-3">
-                        <table class="table table-sm mb-0 align-middle">
-                            <thead><tr><th>Day</th><th>Time</th><th>Teacher</th><th>Actions</th></tr></thead>
-                            <tbody>
-                            @forelse($timetableEntries as $entry)
-                                <tr>
-                                    <td>{{ $entry->day }}</td>
-                                    <td>{{ $entry->start_time }} - {{ $entry->end_time }}</td>
-                                    <td>{{ $entry->teacher_id ?: '-' }}</td>
-                                    <td>
-                                        <form method="DELETE" action="{{ route('portal.timetable.delete', $entry->_id) }}" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete?')"><i class="fa-solid fa-trash"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr><td colspan="4" class="soft">No timetable entries yet.</td></tr>
-                            @endforelse
-                            </tbody>
-                        </table>
+    <div class="row g-3">
+        <div class="col-lg-6">
+            <div class="p-3 rounded-4 border h-100">
+                <h3 class="h6 mb-2">Timetable Entry</h3>
+                <form class="row g-2" method="POST" action="{{ route('portal.timetable.store') }}">
+                    @csrf
+                    <div class="col-4">
+                        <select name="standard_id" class="form-select" required>
+                            <option value="">Standard</option>
+                            @foreach($standards as $standard)
+                                <option value="{{ $standard->_id }}">{{ $standard->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
+                    <div class="col-4">
+                        <select name="subject_id" class="form-select" required>
+                            <option value="">Subject</option>
+                            @foreach($subjects as $subject)
+                                <option value="{{ $subject->_id }}">{{ $subject->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <select name="teacher_id" class="form-select">
+                            <option value="">Teacher (optional)</option>
+                            @foreach($teachers as $teacher)
+                                <option value="{{ $teacher->_id }}">{{ $teacher->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-3"><input class="form-control" name="day" placeholder="Day" required></div>
+                    <div class="col-3"><input class="form-control" name="start_time" placeholder="Start" required></div>
+                    <div class="col-3"><input class="form-control" name="end_time" placeholder="End" required></div>
+                    <div class="col-2 d-grid"><button class="btn btn-brand js-submit-btn" type="submit"><span class="btn-label">Save</span><span class="btn-spinner"></span></button></div>
+                </form>
+                <div class="table-responsive mt-3">
+                    <table class="table table-sm mb-0 align-middle">
+                        <thead><tr><th>Day</th><th>Time</th><th>Teacher</th><th>Actions</th></tr></thead>
+                        <tbody>
+                        @forelse($timetableEntries as $entry)
+                            <tr>
+                                <td>{{ $entry->day }}</td>
+                                <td>{{ $entry->start_time }} - {{ $entry->end_time }}</td>
+                                <td>{{ $entry->teacher_id ?: '-' }}</td>
+                                <td>
+                                    <form method="POST" action="{{ route('portal.timetable.delete', $entry->_id) }}" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete?')"><i class="fa-solid fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="4" class="soft">No timetable entries yet.</td></tr>
+                        @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
+        </div>
 
-            <div class="col-lg-6">
-                <div class="p-3 rounded-3 border h-100">
+        <div class="col-lg-6">
+            <div class="p-3 rounded-4 border h-100">
                     <h3 class="h6 mb-2">Results Upload</h3>
                     <form class="row g-2" method="POST" action="{{ route('portal.results.store') }}">
                         @csrf
@@ -109,7 +111,7 @@
                                     <td>{{ $result->marks }}</td>
                                     <td>{{ $result->grade }}</td>
                                     <td>
-                                        <form method="DELETE" action="{{ route('portal.results.delete', $result->_id) }}" style="display:inline;">
+                                        <form method="POST" action="{{ route('portal.results.delete', $result->_id) }}" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete?')"><i class="fa-solid fa-trash"></i></button>
@@ -125,8 +127,8 @@
                 </div>
             </div>
 
-            <div class="col-lg-6">
-                <div class="p-3 rounded-3 border h-100">
+        <div class="col-lg-6">
+            <div class="p-3 rounded-4 border h-100">
                     <h3 class="h6 mb-2">Publish Notice</h3>
                     <form class="row g-2" method="POST" action="{{ route('portal.notices.store') }}">
                         @csrf
@@ -153,7 +155,7 @@
                                     <td>{{ $notice->scope }}</td>
                                     <td>{{ $notice->target_role }}</td>
                                     <td>
-                                        <form method="DELETE" action="{{ route('portal.notices.delete', $notice->_id) }}" style="display:inline;">
+                                        <form method="POST" action="{{ route('portal.notices.delete', $notice->_id) }}" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete?')"><i class="fa-solid fa-trash"></i></button>
@@ -169,8 +171,8 @@
                 </div>
             </div>
 
-            <div class="col-lg-6">
-                <div class="p-3 rounded-3 border h-100">
+        <div class="col-lg-6">
+            <div class="p-3 rounded-4 border h-100">
                     <h3 class="h6 mb-2">Holiday & Attendance</h3>
                     <form class="row g-2 mb-2" method="POST" action="{{ route('portal.holidays.store') }}">
                         @csrf
@@ -249,7 +251,7 @@
                                     <td>{{ $holiday->date }}</td>
                                     <td>{{ $holiday->type }}</td>
                                     <td>
-                                        <form method="DELETE" action="{{ route('portal.holidays.delete', $holiday->_id) }}" style="display:inline;">
+                                        <form method="POST" action="{{ route('portal.holidays.delete', $holiday->_id) }}" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete?')"><i class="fa-solid fa-trash"></i></button>
@@ -265,4 +267,4 @@
                 </div>
             </div>
         </div>
-    </section>
+</section>

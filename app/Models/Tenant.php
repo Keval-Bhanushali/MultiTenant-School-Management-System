@@ -2,18 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\Model;
 
 class Tenant extends Model
 {
-    use HasFactory;
+    protected $connection = 'mongodb';
+
+    protected $collection = 'tenants';
 
     protected $fillable = [
         'domain',
         'name',
         'settings',
         'subscription_plan',
+        'status',
     ];
 
     protected $casts = [
